@@ -51,7 +51,7 @@ const LogIn = () => {
                 toast.success("User logged-in successfully");
                 localStorage.setItem('isAuthenticated', JSON.stringify(true));
                 localStorage.setItem('User', JSON.stringify(userData));
-                navigate('/home', { replace: true });
+                navigate('/home');
             } else {
                 toast.error("Invalid email or password.");
             }

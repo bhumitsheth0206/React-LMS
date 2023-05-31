@@ -8,15 +8,14 @@ import Home from "./Pages/Home";
 import AdminUser from "./Pages/AdminUser";
 import AdminBooks from "./Pages/Adminbook";
 import AdminBookStatus from "./Pages/AdminBookStatus";
+import PrivateUserRoute from "./Components/PrivateUserRoute";
+import PrivateAdminRoute from "./Components/PrivateAdminRoute";
 
 
 function App() {
   const isAdminAuthenticatedValue = localStorage.getItem('isAdminAuthenticated');
   const isAdminAuthenticated = isAdminAuthenticatedValue !== null ? JSON.parse(isAdminAuthenticatedValue) : false;
 
-  const isAuthenticatedValue = localStorage.getItem('isAuthenticated');
-  const isAuthenticated = isAuthenticatedValue !== null ? JSON.parse(isAuthenticatedValue) : false;
-  
   return (
     <div className="App">
       <ToastContainer
@@ -31,15 +30,35 @@ function App() {
           {isAdminAuthenticated ?
           (
             <>
-              <Route path="/admin/user" element={isAdminAuthenticated? <AdminUser /> : <LogIn />}/>
-              <Route path="/admin/book" element={isAdminAuthenticated? <AdminBooks /> : <LogIn />}/>
-              <Route path="/admin/book-status" element={isAdminAuthenticated? <AdminBookStatus /> : <LogIn />}/>
+              <Route path="/admin/user" element={
+                <PrivateAdminRoute>
+                  <AdminUser />
+                </PrivateAdminRoute>
+                }
+              />
+              <Route path="/admin/book" element={
+                <PrivateAdminRoute>
+                  <AdminBooks />
+                </PrivateAdminRoute>
+                }
+              />
+              <Route path="/admin/book-status" element={
+                <PrivateAdminRoute>
+                  <AdminBookStatus />
+                </PrivateAdminRoute>
+                }
+              />
             </>
           ) :
           (
             <>
               <Route path="/sign-up" element={<SignUp />} />
-              <Route path="/home" element={ isAuthenticated ? <Home /> : <LogIn />} />
+              <Route path="/home" element={
+                <PrivateUserRoute>
+                  <Home />
+                </PrivateUserRoute>
+                }
+              />
             </>
           ) }
         </Routes>
